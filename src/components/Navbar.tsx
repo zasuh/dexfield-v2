@@ -5,7 +5,8 @@ import AddIcon from "@mui/icons-material/Add";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { FaJenkins } from "react-icons/fa";
-import { Stack, Typography, useTheme } from "@mui/material";
+import { DialogTitle, Stack, Typography } from "@mui/material";
+import SimpleDialog from "./common/Dialog";
 
 const LINKS = [
   {
@@ -29,20 +30,27 @@ const LINKS = [
 ];
 
 function Navbar() {
-  const theme = useTheme();
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Stack
       direction={"row"}
       alignItems={"center"}
       justifyContent={"space-between"}
       sx={{
-        backgroundColor: theme.palette.background.default,
         padding: "20px 30px",
       }}
     >
-      <LeftWrapper>
-        <Typography variant={"h5"}>DEXFIELDS</Typography>
-        <LeftLinksWrapper>
+      <Stack direction={"row"} alignItems={"center"} gap={5}>
+        <Typography variant={"h5"}>DEXFIELD</Typography>
+        <Stack direction={"row"} alignItems={"center"} gap={2}>
           {LINKS.slice(0, 3).map((link) => (
             <Typography variant={"body1"} key={link.label}>
               {link.label}
@@ -54,57 +62,30 @@ function Navbar() {
               {link.label}
             </Typography>
           ))}
-        </LeftLinksWrapper>
-      </LeftWrapper>
-      <RightWrapper>
-        <AddIcon />
+        </Stack>
+      </Stack>
+      <Stack
+        direction={"row"}
+        alignItems={"center"}
+        justifyContent={"space-between"}
+        width={220}
+      >
+        <AddIcon onClick={handleOpen} />
         <NotificationsActiveIcon />
         <FaJenkins />
         <SearchIcon />
         <DarkModeIcon />
-      </RightWrapper>
+      </Stack>
+      <SimpleDialog open={open} onClose={handleClose}>
+        <DialogTitle>Add deck</DialogTitle>
+      </SimpleDialog>
     </Stack>
   );
 }
 
-const Wrapper = styled.div({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  maxWidth: "100%",
-  backgroundColor: "deeppink",
-  boxShadow: "0 4px 2px -2px gray",
-  color: "white",
-  padding: "20px 30px",
-});
-
-const LeftWrapper = styled.div({
-  width: 600,
-  display: "flex",
-  alignItems: "center",
-  gap: 20,
-});
-
-const RightWrapper = styled.div({
-  width: 120,
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  gap: 10,
-});
-
-const LeftLinksWrapper = styled.div({
-  height: 15,
-  width: 400,
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-});
-
 const Separator = styled.div({
-  height: "100%",
-  width: 1,
-  backgroundColor: "white",
+  height: 20,
+  borderLeft: "1px solid black",
 });
 
 export default Navbar;
